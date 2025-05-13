@@ -1,3 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using MyApi.BussinessLogic;
+using MyApi.BussinessLogic.IBussinessLogic;
+using MyApi.BussinessRepository;
+using MyApi.BussinessRepository.IBussinessRepository;
+using MyApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddDbContext<LearningNetContext>(opt => opt.UseSqlServer("Data Source=localhost\\SQLEXPRESS;Initial Catalog=Learning;Integrated Security=True;Trust Server Certificate=True"));
+
+//repo
+builder.Services.AddTransient<IEmployerBussinessLogic, EmployerBussinessLogic>();
+builder.Services.AddTransient<IEmployerRepository, EmployerRepository>();
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
